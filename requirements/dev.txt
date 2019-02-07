@@ -1,0 +1,10 @@
+-r prod.txt
+
+bumpversion
+wheel
+watchdog
+flake8
+coverage
+Sphinx
+cryptography
+PyYAML

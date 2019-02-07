@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -72,9 +73,6 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
 # celery beat schedule file
 celerybeat-schedule
 
@@ -102,3 +100,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+# pyenv python configuration file
+.python-version
+
+# VSCode editor settings
+.vscode

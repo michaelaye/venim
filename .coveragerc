@@ -1,0 +1,7 @@
+[report]
+omit =
+    setup.py
+    venim/__main__.py
+    venim/_version.py
+    versioneer.py
+    tests/*
