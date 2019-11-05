@@ -18,7 +18,8 @@ def scan_image_directory(path):
 
     Returns
     -------
-    None
+    pd.DataFrame
+        DataFrame containing the collected stats
     """
     input_dir = Path(path)
     directory_file = input_dir / "directory.csv"
@@ -63,7 +64,4 @@ def scan_image_directory(path):
     df = pd.DataFrame(bucket)
     df.to_csv(directory_file)
     print("Metadata CSV generated at", directory_file)
-    if len(df < 100):
-        print(df)
-    else:
-        print("Stats have more than 100 entries. Not printing.")
+    return df
