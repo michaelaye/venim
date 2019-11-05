@@ -12,19 +12,9 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-setup_requirements = []
-with open('requirements/prod.txt', 'r') as fd:
-    for req in requirements.parse(fd):
-        setup_requirements.append(req.name)
-
-test_requirements = []
-with open('requirements/test.txt', 'r') as fd:
-    for req in requirements.parse(fd):
-        test_requirements.append(req.name)
-
 setup(
     name='venim',
-    version='0.1.0',
+    version='0.1.1',
     description="Python tools for Venus Image Analysis",
     long_description=readme + '\n\n' + history,
     author="K.-Michael Aye",
@@ -39,7 +29,11 @@ setup(
     package_dir={'venim':
                  'venim'},
     include_package_data=True,
-    install_requires=requirements,
+    install_requires=[
+        "numpy",
+        "pandas",
+        "matplotlib",
+    ],
     license="MIT license",
     zip_safe=False,
     keywords='venim',
@@ -51,7 +45,4 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
     ],
-    test_suite='tests',
-    tests_require=test_requirements,
-    setup_requires=setup_requirements,
 )
