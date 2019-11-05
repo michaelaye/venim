@@ -25,10 +25,22 @@ Python tools for Venus Image Analysis
 * Documentation: https://venim.readthedocs.io.
 
 
-Features
---------
+Features (planned)
+------------------
 
-* TODO
+* Read FITS arrays (done via astropy.io.fits)
+* (Standard image reduction pipeline: bias subtraction, flat field normalization, etc.)
+* (Other image clean-up: bad pixels, cosmic rays, detector artifacts)
+* (Generate estimated errors for each pixel)
+* (Transform detector x,y coordinates into local Lat, Lon)
+* (Take various gradients of images)
+* (Filter images in the spatial frequency domain)
+* (Sub-pixel disk registration)
+* (Robust stacking of co-registered images)
+* (Cloud tracking)
+
+* FITS image stats scanner (creates CSV overview file)
+
 
 Credits
 ---------
