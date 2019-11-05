@@ -1,4 +1,0 @@
-apiwrapper
-Click>=6.0'
-pytest-runner
-
