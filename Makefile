@@ -51,7 +51,7 @@ lint: ## check style with flake8
 
 test: ## run tests quickly with the default Python
 	py.test
-	
+
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source venim -m pytest
@@ -71,8 +71,7 @@ servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: clean ## package and upload a release
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
+	twine upload dist/*
 
 dist: clean ## builds source and wheel package
 	python setup.py sdist
