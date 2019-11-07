@@ -25,25 +25,31 @@ Python tools for Venus Image Analysis
 * Documentation: https://venim.readthedocs.io.
 
 
-Features (planned)
-------------------
+Features
+--------
 
-* Read FITS arrays (done via astropy.io.fits)
-* (Standard image reduction pipeline: bias subtraction, flat field normalization, etc.)
-* (Other image clean-up: bad pixels, cosmic rays, detector artifacts)
-* (Generate estimated errors for each pixel)
-* (Transform detector x,y coordinates into local Lat, Lon)
-* (Take various gradients of images)
-* (Filter images in the spatial frequency domain)
-* (Sub-pixel disk registration)
-* (Robust stacking of co-registered images)
-* (Cloud tracking)
+If the feature has been implemented in an importable way, it's indicated by a filled checkmark [x]
 
-* FITS image stats scanner (creates CSV overview file)
+* [x] Read FITS arrays (done via astropy.io.fits)
+* [x] FITS image stats scanner (creates CSV overview file)
+* [ ] Standard image reduction pipeline: bias subtraction, flat field normalization, etc.
+* [ ] Other image clean-up: bad pixels, cosmic rays, detector artifacts
+* [ ] Generate estimated errors for each pixel
+* [ ] Transform detector x,y coordinates into local Lat, Lon
+* [ ] Take various gradients of images
+* [ ] Filter images in the spatial frequency domain
+* [ ] Sub-pixel disk registration
+* [ ] Robust stacking of co-registered images
+* [ ] Cloud tracking
+
 
 
 Credits
 ---------
+
+The content of this package is based on summer science work by Nicolas Ardavin and Kenyon Prater, under the lead of Eliot Young and Mark Bullock.
+Later improvements have been implemented by the package maintainer Michael Aye.
+
 
 This package was created with Cookiecutter_ and the forked `michaelaye/cookiecutter-pypackage-conda`_ project template.
 
