@@ -2,6 +2,7 @@
 Credits
 =======
 
+
 Development Lead
 ----------------
 
@@ -10,4 +11,14 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Eliot Young
+* Mark Bullock
+
+
+Initial development
+-------------------
+
+Mostly in the form of Jupyter notebooks
+
+* Nicolas Ardavin
+* Kenyon Prater 
