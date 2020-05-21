@@ -3,12 +3,33 @@
 
 """Tests for `venim` package."""
 
-import pytest
+from pathlib import Path
+from urllib.request import urlretrieve
 
+import pytest
+from astropy.io import fits
 from click.testing import CliRunner
 
-from venim import venim
-from venim import cli
+from venim import cli, stats
+
+server_url = 'https://atmos.nmsu.edu/PDS/data/'
+testfile_url = server_url + 'vcoir2_0001/data/r0009/ir2_20160313_075709_174_l1b_v10.fit'
+
+
+@pytest.fixture(scope="session")
+def image_file(tmpdir_factory):
+    fn = tmpdir_factory.mktemp("data").join("testimg.fits")
+    print("URL", testfile_url)
+    print("FN", str(fn))
+    urlretrieve(str(testfile_url), str(fn))
+    return fn
+
+
+# contents of test_image.py
+def test_openfits(image_file):
+    hdu = fits.open(image_file)
+    assert len(hdu) > 0
+
 
 
 @pytest.fixture
