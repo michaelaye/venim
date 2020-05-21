@@ -19,7 +19,7 @@ setup(
     author="K.-Michael Aye",
     author_email="kmichael.aye@gmail.com",
     url="https://github.com/michaelaye/venim",
-    packages=find_packages(include=["venim"]),
+    packages=find_packages(),
     entry_points={"console_scripts": ["venim=venim.cli:main"]},
     package_dir={"venim": "venim"},
     include_package_data=True,
