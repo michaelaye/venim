@@ -1,9 +1,14 @@
 from pathlib import Path
 
 import astropy.io.fits as pf
-from tqdm import tqdm_notebook as tqdm
-
 import pandas as pd
+from tqdm.auto import tqdm
+
+irtf_translator = {
+    "name": "IRAFNAME",
+    "date": "DATE_OBS",
+    "time": "TIME_OBS",
+}
 
 
 def scan_image_directory(path):
