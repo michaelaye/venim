@@ -13,7 +13,7 @@ with open("HISTORY.rst") as history_file:
 
 setup(
     name="venim",
-    version="0.3.2",
+    version="0.3.3",
     description="Python tools for Venus Image Analysis",
     long_description=readme + "\n\n" + history,
     author="K.-Michael Aye",
