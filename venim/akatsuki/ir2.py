@@ -1,11 +1,12 @@
 from pathlib import Path
 from urllib.request import urlretrieve
 
-import pandas as pd
-import pvl
 import requests
 from tqdm.auto import tqdm
 from urlpath import URL
+
+import pandas as pd
+import pvl
 
 from ..config import config
 from ..pathmanager import PathManager
@@ -155,21 +156,23 @@ class Downloader:
         pm = IR2PathManager()
         return pm.instr_savedir / self.level
 
-    def urls_for_orbit(self, orbit=None):
+    def get_urls_for_orbit(self, orbit=None):
         if orbit is None:
             orbit = self.orbit
         else:
             self.orbit = orbit
         df = self.get_orbit_filelist(self.orbit)
-        urls = level_urls[self.level] / self.orbit / df.filename
-        return urls
+        urls = [
+            level_urls[self.level] / self.orbit / filename for filename in df.filename
+        ]
+        return pd.Series(urls)
 
     def download_orbit_files(self, orbit=None, only_fits=True, **kwargs):
         if orbit is None:
             orbit = self.orbit
         else:
             self.orbit = orbit
-        urls = self.urls_for_orbit(orbit)
+        urls = self.get_urls_for_orbit(orbit)
         if only_fits:
             urls = [url for url in urls if url.suffix.endswith(".fit")]
         orbit_savedir = self.savedir / self.orbit
