@@ -2,6 +2,16 @@
 History
 =======
 
+
+0.4.3 (2020-05-26)
+------------------
+
+* fix wavelength finally
+* change notebooks
+  * renamed opening_calibrated to open_files.ipynb
+  * adding finding_files.ipynb
+
+
 0.4.1 (2020-05-26)
 ------------------
 
