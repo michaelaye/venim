@@ -8,12 +8,12 @@ from urllib.request import urlretrieve
 
 import pytest
 from astropy.io import fits
-from click.testing import CliRunner
 
-from venim import cli, stats
+# from click.testing import CliRunner
+# from venim import cli, stats
 
-server_url = 'https://atmos.nmsu.edu/PDS/data/'
-testfile_url = server_url + 'vcoir2_0001/data/r0009/ir2_20160313_075709_174_l1b_v10.fit'
+server_url = "https://atmos.nmsu.edu/PDS/data/"
+testfile_url = server_url + "vcoir2_0001/data/r0009/ir2_20160313_075709_174_l1b_v10.fit"
 
 
 @pytest.fixture(scope="session")
@@ -27,33 +27,32 @@ def image_file(tmpdir_factory):
 
 # contents of test_image.py
 def test_openfits(image_file):
-    hdu = fits.open(image_file)
+    hdu = fits.open(str(image_file))
     assert len(hdu) > 0
 
 
+# @pytest.fixture
+# def response():
+#     """Sample pytest fixture.
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/michaelaye/cookiecutter-pypackage-conda')
-
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+#     See more at: http://doc.pytest.org/en/latest/fixture.html
+#     """
+#     # import requests
+#     # return requests.get('https://github.com/michaelaye/cookiecutter-pypackage-conda')
 
 
-def test_command_line_interface():
-    """Test the CLI."""
-    runner = CliRunner()
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 0
-    assert 'venim.cli.main' in result.output
-    help_result = runner.invoke(cli.main, ['--help'])
-    assert help_result.exit_code == 0
-    assert '--help  Show this message and exit.' in help_result.output
+# def test_content(response):
+#     """Sample pytest test function with the pytest fixture as an argument."""
+#     # from bs4 import BeautifulSoup
+#     # assert 'GitHub' in BeautifulSoup(response.content).title.string
+
+
+# def test_command_line_interface():
+#     """Test the CLI."""
+#     runner = CliRunner()
+#     result = runner.invoke(cli.main)
+#     assert result.exit_code == 0
+#     assert 'venim.cli.main' in result.output
+#     help_result = runner.invoke(cli.main, ['--help'])
+#     assert help_result.exit_code == 0
+#     assert '--help  Show this message and exit.' in help_result.output

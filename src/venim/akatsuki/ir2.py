@@ -1,12 +1,12 @@
 from pathlib import Path
 from urllib.request import urlretrieve
 
-import requests
-from tqdm.auto import tqdm
-from urlpath import URL
-
 import pandas as pd
 import pvl
+import requests
+from astropy.io import fits
+from tqdm.auto import tqdm
+from urlpath import URL
 
 from ..config import config
 from ..pathmanager import PathManager
@@ -318,7 +318,7 @@ class IR2PathManager(PathManager):
             new_orbit = "r" + str(new_orbit).zfill(4)
         self._orbit = new_orbit
 
-    def list_files_for_orbit(self, orbit=None, full_paths=None):
+    def list_files_for_orbit(self, orbit=None):
         """Get a file listing as a pandas.DataFrame.
 
         Parameters
@@ -335,16 +335,16 @@ class IR2PathManager(PathManager):
         """
         if orbit is None:
             orbit = self.orbit
-        if full_paths is None:
-            full_paths = self.full_paths
-        if not str(orbit).startswith("r"):
-            orbit = "r" + str(orbit).zfill(4)
-        filelist = list((self.savedir / orbit).glob("*.fit*"))
-        if not full_paths:
-            filelist = [f.name for f in filelist]
-        df = pd.DataFrame(filelist, columns=["filename"])
+        pathlist = list((self.savedir).glob("*.fit*"))
+        namelist = [f.name for f in pathlist]
+        df = pd.DataFrame({"filename": namelist, "full_path": pathlist})
         df["datetime"] = df.filename.map(lambda x: IR2FileName(x).datetime)
-        return df
+        df["wavelength"] = df.filename.map(lambda x: IR2FileName(x).wavelength)
+        df["exposure"] = df.full_path.map(lambda x: fits.open(x)[1].header["EXPOSURE"])
+        columns = list(df.columns)
+        columns.remove("full_path")
+        columns.append("full_path")
+        return df[columns]
 
     def get_path(self, index):
         ""
@@ -357,4 +357,17 @@ class IR2PathManager(PathManager):
 
     @property
     def savedir(self):
-        return self.instr_savedir / self.level
+        try:
+            return self.instr_savedir / self.level / self.orbit
+        except TypeError:
+            raise ValueError("Orbit must be set first.")
+
+
+# helper functions
+def get_exposure(row):
+    fits.open(row.full_path)[1].header[""]
+
+
+def get_orbit_file_list(orbit):
+    pm = IR2PathManager(orbit=orbit)
+    return pm.list_files_for_orbit()
