@@ -339,7 +339,7 @@ class IR2PathManager(PathManager):
         namelist = [f.name for f in pathlist]
         df = pd.DataFrame({"filename": namelist, "full_path": pathlist})
         df["datetime"] = df.filename.map(lambda x: IR2FileName(x).datetime)
-        df["wavelength"] = df.filename.map(lambda x: IR2FileName(x).wavelength)
+        df["wavelength"] = df.filename.map(lambda x: str(IR2FileName(x).wavelength))
         df["exposure"] = df.full_path.map(lambda x: fits.open(x)[1].header["EXPOSURE"])
         columns = list(df.columns)
         columns.remove("full_path")
