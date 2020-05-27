@@ -376,3 +376,18 @@ def get_orbit_file_list(orbit):
     "Shortcut to simply get the list of files from IR2PathManager."
     pm = IR2PathManager(orbit=orbit)
     return pm.list_files_for_orbit()
+
+
+def get_path_for_file_id(id):
+    pm = IR2PathManager(orbit=0)
+    return list(pm.savedir.parent.glob(f"*/{id}"))[0]
+
+
+def get_header_for_file_id(id):
+    p = get_path_for_file_id(id)
+    return fits.open(p)[1].header
+
+
+def get_data_for_file_id(id):
+    p = get_path_for_file_id(id)
+    return fits.getdata(p)
