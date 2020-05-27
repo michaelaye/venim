@@ -378,7 +378,7 @@ def get_orbit_file_list(orbit):
     return pm.list_files_for_orbit()
 
 
-def get_file_id(id):
+def get_file_path(id):
     """
     Glob all IR2 data for given file name.
 
@@ -412,7 +412,7 @@ def get_file_header(id):
     fits.Header
         FITS ImageHDU header for given filename.
     """
-    p = get_path_for_file_id(id)
+    p = get_file_path(id)
     return fits.open(p)[1].header
 
 
@@ -432,7 +432,7 @@ def get_file_data(id):
     numpy.array
         Numpy 2D array of ImageHDU of the FITS file for given filename.
     """
-    p = get_path_for_file_id(id)
+    p = get_file_path(id)
     return fits.getdata(p)
 
 
@@ -453,5 +453,5 @@ def getdata(id, header=False):
     numpy.array(, fits.Header)
         Return numpy.array (for ImageHDU), and optionally also the fits.Header
     """
-    p = get_path_for_file_id(id)
+    p = get_file_path(id)
     return fits.getdata(p, header=header)
