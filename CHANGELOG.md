@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.2 (2020-05-27)
+
+#### New Features
+
+* (data): refactor helper function names
+
 ## v0.5.1 (2020-05-27)
 
 #### Fixes
