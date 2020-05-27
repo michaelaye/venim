@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.3 (2020-05-27)
+
+#### Fixes
+
+* (data): fix refactor
+
 ## v0.5.2 (2020-05-27)
 
 #### New Features
