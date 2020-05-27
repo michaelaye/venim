@@ -1,9 +1,15 @@
 # Changelog
 
-## Unreleased (2020-05-26)
+## v0.5.0 (2020-05-27)
 
+#### New Features
+
+* (data): add new helper functions
 #### Docs
 
+* add docs/requirements for readthedocs
+* add working documentation
+* add readthedocs config
 * add history content
 
 ## v0.4.3 (2020-05-26)
