@@ -1,18 +1,17 @@
-Welcome to Venus Imaging Analysis's documentation!
-======================================
-
-Contents:
+Welcome to VENIM (VENus Image analysis)
+=======================================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
    readme
    installation
    usage
-   modules
+   reference/modules
    contributing
    authors
-   history
+   CHANGELOG.md
 
 Indices and tables
 ==================

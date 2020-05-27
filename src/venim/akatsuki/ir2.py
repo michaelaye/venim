@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+"""Akatsuki IR2 utilities.
+
+Utilities to download and manage Akatsuki IR2 data from NASA's PDS.
+"""
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -22,6 +27,23 @@ level_urls = {
 
 
 def get_rev_filelist(rev, level="calibrated"):
+    """Scrape PDS file listing using pandas.read_html.
+
+    First scrape, using `pd.read_html`, and then add columns `datestr`, `timestr`, and
+    `datetime`.
+
+    Parameters
+    ----------
+    rev : str
+        Revolution (i.e. orbit) string in format `rxxxx`
+    level : {'raw', 'calibrated','geom'}, optional.
+        Data level to parse directory for. Default: 'calibrated'
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with the content of the parsed file listing.
+    """
     results = pd.read_html(str(level_urls[level] / rev), skiprows=2)
     df = results[0]
     df = df.drop("Unnamed: 0", axis=1).dropna(how="all")
@@ -94,6 +116,7 @@ class Downloader:
         25
 
         or
+
         >>> dl = Dowloader()
         >>> dl.orbit = 25
         >>> dl.orbit
@@ -198,20 +221,6 @@ class IR2FileName:
     ----------
     fname : str
         Akatsuki filename in the format `ir2_20160829_201008_202_l2b_v10.fit`
-
-    Attributes
-    ----------
-    tokens
-    instr
-    datestr
-    date
-    timestr
-    time
-    datetime
-    wavelength
-    in_micron
-    level
-    version
     """
 
     def __init__(self, fname):
@@ -219,18 +228,22 @@ class IR2FileName:
 
     @property
     def tokens(self):
+        "list: Parts of the filename, separated by '_'."
         return self.name.split("_")
 
     @property
     def instr(self):
+        "str: Instrument ID."
         return self.tokens[0]
 
     @property
     def datestr(self):
+        "str: The date string of the filename."
         return self.tokens[1]
 
     @property
     def date(self):
+        "pd.Timestamp: Date string converted to proper time object."
         return pd.to_datetime(self.datestr)
 
     @property
@@ -251,6 +264,7 @@ class IR2FileName:
 
     @property
     def in_micron(self):
+        "float: Filter wavelength converted to micron."
         return int(self.wavelength) / 100
 
     @property
@@ -286,16 +300,6 @@ class IR2PathManager(PathManager):
         Akatsuki orbit, both revolution string rxxxx and integer number is allowed.
     full_paths : bool, optional
         Switch to show full paths on disk.
-
-    Attributes
-    ----------
-    orbit
-    savedir
-
-    Methods
-    -------
-    list_files_for_orbit(orbit=None, full_paths=None)
-        Get a file listing
     """
 
     def __init__(self, level="calibrated", orbit=None, full_paths=False):
@@ -369,5 +373,6 @@ def get_exposure(row):
 
 
 def get_orbit_file_list(orbit):
+    "Shortcut to simply get the list of files from IR2PathManager."
     pm = IR2PathManager(orbit=orbit)
     return pm.list_files_for_orbit()
