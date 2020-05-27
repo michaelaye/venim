@@ -18,7 +18,7 @@ with open(path.join(here, "HISTORY.rst"), encoding="utf-8") as history_file:
 
 setup(
     name="venim",
-    version="0.5.0",
+    version="0.5.1",
     description="Python tools for Venus Image Analysis",
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/x-rst",
