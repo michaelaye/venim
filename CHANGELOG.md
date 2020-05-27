@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.1 (2020-05-27)
+
+#### Fixes
+
+* (build): fix missing astropy requirement
+* (docs): fix missing requirements file
+
 ## v0.5.0 (2020-05-27)
 
 #### New Features
