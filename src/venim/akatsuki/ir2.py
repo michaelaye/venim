@@ -378,16 +378,80 @@ def get_orbit_file_list(orbit):
     return pm.list_files_for_orbit()
 
 
-def get_path_for_file_id(id):
+def get_file_id(id):
+    """
+    Glob all IR2 data for given file name.
+
+    Parameters
+    ----------
+    id : str
+        IR2 filename
+
+    Returns
+    -------
+    pathlib.Path
+        Local path to filename given.
+    """
     pm = IR2PathManager(orbit=0)
     return list(pm.savedir.parent.glob(f"*/{id}"))[0]
 
 
-def get_header_for_file_id(id):
+def get_file_header(id):
+    """
+    Get header for given file name.
+
+    Searches all IR2 data for given filename and returns header of found file.
+
+    Parameters
+    ----------
+    id : str
+        IR2 filename.
+
+    Returns
+    -------
+    fits.Header
+        FITS ImageHDU header for given filename.
+    """
     p = get_path_for_file_id(id)
     return fits.open(p)[1].header
 
 
-def get_data_for_file_id(id):
+def get_file_data(id):
+    """
+    Get data for given file name.
+
+    Searches all IR2 data for given filename and returns numpy data for found file.
+
+    Parameters
+    ----------
+    id: str
+        IR2 filename.
+
+    Returns
+    -------
+    numpy.array
+        Numpy 2D array of ImageHDU of the FITS file for given filename.
+    """
     p = get_path_for_file_id(id)
     return fits.getdata(p)
+
+
+def getdata(id, header=False):
+    """
+    Simulate fits.getdata, for just a filename without full path.
+    Will search all IR2 data for given file name.
+
+    Parameters
+    ----------
+    id : str
+        File name
+    header : bool, optional
+        Boolean switch to control if you also want the header. Default: False
+
+    Returns
+    -------
+    numpy.array(, fits.Header)
+        Return numpy.array (for ImageHDU), and optionally also the fits.Header
+    """
+    p = get_path_for_file_id(id)
+    return fits.getdata(p, header=header)
