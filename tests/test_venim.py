@@ -25,12 +25,6 @@ def image_file(tmpdir_factory):
     return fn
 
 
-# contents of test_image.py
-def test_openfits(image_file):
-    hdu = fits.open(str(image_file))
-    assert len(hdu) > 0
-
-
 # @pytest.fixture
 # def response():
 #     """Sample pytest fixture.
