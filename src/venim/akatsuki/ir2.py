@@ -352,7 +352,7 @@ class IR2PathManager(PathManager):
         columns = list(df.columns)
         columns.remove("full_path")
         columns.append("full_path")
-        return df[columns]
+        return df[columns].set_index("datetime")
 
     def get_path(self, index):
         ""
