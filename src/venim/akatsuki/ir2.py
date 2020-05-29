@@ -25,6 +25,8 @@ level_urls = {
     "geom": URL("https://atmos.nmsu.edu/PDS/data/vcoir2_2001/geometry/"),
 }
 
+HEADER_KEYWORDS = ["EXPOSURE", "NAXIS1", "NAXIS2", "I2_T_C1", "I2_T_C2", "I2_T_OP"]
+
 
 def get_rev_filelist(rev, level="calibrated"):
     """Scrape PDS file listing using pandas.read_html.
@@ -344,7 +346,8 @@ class IR2PathManager(PathManager):
         df = pd.DataFrame({"filename": namelist, "full_path": pathlist})
         df["datetime"] = df.filename.map(lambda x: IR2FileName(x).datetime)
         df["wavelength"] = df.filename.map(lambda x: int(IR2FileName(x).wavelength))
-        df["exposure"] = df.full_path.map(lambda x: fits.open(x)[1].header["EXPOSURE"])
+        for keyword in HEADER_KEYWORDS:
+            df[keyword] = df.full_path.map(lambda x: fits.open(x)[1].header[keyword])
         columns = list(df.columns)
         columns.remove("full_path")
         columns.append("full_path")
