@@ -346,8 +346,9 @@ class IR2PathManager(PathManager):
         df = pd.DataFrame({"filename": namelist, "full_path": pathlist})
         df["datetime"] = df.filename.map(lambda x: IR2FileName(x).datetime)
         df["wavelength"] = df.filename.map(lambda x: int(IR2FileName(x).wavelength))
-        for keyword in HEADER_KEYWORDS:
-            df[keyword] = df.full_path.map(lambda x: fits.open(x)[1].header[keyword])
+        df = pd.concat([df, df.apply(get_header_keywords, axis=1)], axis=1)
+        # for keyword in HEADER_KEYWORDS:
+        #     df[keyword] = df.full_path.map(lambda x: fits.open(x)[1].header[keyword])
         columns = list(df.columns)
         columns.remove("full_path")
         columns.append("full_path")
@@ -371,6 +372,14 @@ class IR2PathManager(PathManager):
 
 
 # helper functions
+def get_header_keywords(row):
+    header = fits.open(row.full_path)[1].header
+    d = {}
+    for kw in HEADER_KEYWORDS:
+        d[kw] = header[kw]
+    return pd.Series(d)
+
+
 def get_exposure(row):
     fits.open(row.full_path)[1].header[""]
 
