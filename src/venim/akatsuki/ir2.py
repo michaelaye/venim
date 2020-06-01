@@ -14,6 +14,8 @@ import pvl
 import requests
 from astropy.io import fits
 from holoviews import opts
+from skimage.exposure import equalize_adapthist as equalize
+from skimage.exposure import rescale_intensity
 from tqdm.auto import tqdm
 from urlpath import URL
 
@@ -21,7 +23,10 @@ from ..config import config
 from ..pathmanager import PathManager
 
 hv.extension("bokeh")
-opts.defaults(opts.Raster(invert_yaxis=True, width=500, height=500, cmap="gray"))
+opts.defaults(
+    opts.Image(tools=["hover"], cmap="gray", width=500, height=500),
+    opts.Points(color="red", marker="x"),
+)
 
 storage_root = Path(config["venim_path"]).expanduser()
 storage_root.mkdir(exist_ok=True, parents=True)
@@ -532,5 +537,33 @@ class Image:
         newimg[ll_row:ur_row, ll_col:ur_col] = self.data
         return newimg
 
+    @property
+    def rescaled(self):
+        return rescale_intensity(self.full_frame, out_range="float")
+
+    @property
+    def equalized(self):
+        return equalize(self.rescaled)
+
     def plot(self):
-        return hv.Raster(self.full_frame).redim.range(z=(0, None))
+        return hv.Image(
+            (np.arange(1024), np.arange(1024), self.full_frame)
+        ).redim.range(z=(0, None))
+
+    def plot_equalized(self):
+        return hv.Raster(self.equalized).redim.range(z=(0, None))
+
+    def annotate(self):
+        points = hv.Points([]).opts(
+            width=500, height=500, padding=0, responsive=False, size=20
+        )
+        self.annotator = hv.annotate.instance()
+        layout = self.annotator(self.plot() * points, name="Limb Points")
+        return layout
+
+    @property
+    def points_data(self):
+        try:
+            return self.annotator.annotated.dframe()
+        except AttributeError:
+            print("Got to annotate first")
