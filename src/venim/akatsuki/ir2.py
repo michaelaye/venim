@@ -25,7 +25,7 @@ from ..pathmanager import PathManager
 hv.extension("bokeh")
 opts.defaults(
     opts.Image(tools=["hover"], cmap="gray", width=500, height=500),
-    opts.Points(color="red", marker="x"),
+    opts.Points(color="red", marker="x", size=20),
 )
 
 storage_root = Path(config["venim_path"]).expanduser()
@@ -554,9 +554,7 @@ class Image:
         return hv.Raster(self.equalized).redim.range(z=(0, None))
 
     def annotate(self):
-        points = hv.Points([]).opts(
-            width=500, height=500, padding=0, responsive=False, size=20
-        )
+        points = hv.Points([]).opts(width=500, height=500, padding=0, responsive=False)
         self.annotator = hv.annotate.instance()
         layout = self.annotator(self.plot() * points, name="Limb Points")
         return layout

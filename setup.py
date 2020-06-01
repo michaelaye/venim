@@ -37,6 +37,8 @@ setup(
         "planetarypy",
         "urlpath",
         "astropy",
+        "holoviews",
+        "circle-fit",
     ],
     license="MIT license",
     # zip_safe=False,
