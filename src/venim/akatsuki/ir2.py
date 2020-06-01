@@ -7,15 +7,21 @@ import webbrowser
 from pathlib import Path
 from urllib.request import urlretrieve
 
+import holoviews as hv
+import numpy as np
 import pandas as pd
 import pvl
 import requests
 from astropy.io import fits
+from holoviews import opts
 from tqdm.auto import tqdm
 from urlpath import URL
 
 from ..config import config
 from ..pathmanager import PathManager
+
+hv.extension("bokeh")
+opts.defaults(opts.Raster(invert_yaxis=True, width=500, height=500, cmap="gray"))
 
 storage_root = Path(config["venim_path"]).expanduser()
 storage_root.mkdir(exist_ok=True, parents=True)
@@ -482,7 +488,9 @@ def getdata(id, header=False):
     numpy.array(, fits.Header)
         Return numpy.array (for ImageHDU), and optionally also the fits.Header
     """
-    p = get_file_path(id)
+    p = Path(id)
+    if not p.is_absolute():
+        p = get_file_path(id)
     return fits.getdata(p, header=header)
 
 
@@ -501,3 +509,28 @@ def open_fits_dic():
     "Open new browser tab for FITS DIC."
     open_doc_url("fits_dic")
 
+
+class Image:
+    def __init__(self, id):
+        p = Path(id)
+        if not p.is_absolute():
+            p = get_file_path(id)
+        self.path = p
+        self.data, self.header = fits.getdata(p, header=True)
+
+    @property
+    def name(self):
+        return self.p.name
+
+    @property
+    def full_frame(self):
+        newimg = np.zeros((1024, 1024))
+        ll_row = self.header["P_POSLLY"] - 1
+        ll_col = self.header["P_POSLLX"] - 1
+        ur_row = self.header["P_POSURY"]
+        ur_col = self.header["P_POSURX"]
+        newimg[ll_row:ur_row, ll_col:ur_col] = self.data
+        return newimg
+
+    def plot(self):
+        return hv.Raster(self.full_frame).redim.range(z=(0, None))
