@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.6.4 (2020-05-29)
+
+#### Fixes
+
+* (data): fixing version bug again, but also add notebook for stats plotting
+
+## v0.6.3 (2020-05-29)
+
+#### New Features
+
+* (data): return filelist with datetime as index again
+
+## v0.6.2 (2020-05-29)
+
+#### Performance improvements
+
+* (data): improve keyword reading performance
+
+## v0.6.1 (2020-05-29)
+
+#### Fixes
+
+* (build): fixing version string
+
+## v0.6.0 (2020-05-29)
+
+#### New Features
+
+* add FITS header keywords to filelist dataframe
+
 ## v0.5.3 (2020-05-27)
 
 #### Fixes
