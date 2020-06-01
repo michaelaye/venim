@@ -3,6 +3,7 @@
 
 Utilities to download and manage Akatsuki IR2 data from NASA's PDS.
 """
+import webbrowser
 from pathlib import Path
 from urllib.request import urlretrieve
 
@@ -23,6 +24,22 @@ level_urls = {
     "raw": URL("https://atmos.nmsu.edu/PDS/data/vcoir2_0001/data/"),
     "calibrated": URL("https://atmos.nmsu.edu/PDS/data/vcoir2_1001/data/l2b/"),
     "geom": URL("https://atmos.nmsu.edu/PDS/data/vcoir2_2001/geometry/"),
+}
+
+doc_urls = {
+    "imagecoord": URL(
+        "https://atmos.nmsu.edu/PDS/data/vcoir2_1001/document/imagecoord.txt"
+    ),
+    "fits_dic": URL(
+        "https://atmos.nmsu.edu/PDS/data/vcoir2_1001/document/vco_fits_dic_v05.html"
+    ),
+    "ir2cal": URL("https://atmos.nmsu.edu/PDS/data/vcoir2_1001/document/ir2cal.txt"),
+    "onlabels": URL(
+        "https://atmos.nmsu.edu/PDS/data/vcoir2_1001/document/onlabels.txt"
+    ),
+    "vco_observation_program": URL(
+        "https://atmos.nmsu.edu/PDS/data/vcoir2_1001/document/vco_obsprg_v04.html"
+    ),
 }
 
 HEADER_KEYWORDS = ["EXPOSURE", "NAXIS1", "NAXIS2", "I2_T_C1", "I2_T_C2", "I2_T_OP"]
@@ -467,3 +484,20 @@ def getdata(id, header=False):
     """
     p = get_file_path(id)
     return fits.getdata(p, header=header)
+
+
+def list_available_doc_urls():
+    "List the available URLs to IR2 documentation on PDS."
+    for k, v in doc_urls.items():
+        print(k)
+        print(v)
+
+
+def open_doc_url(doc_key):
+    webbrowser.open_new(str(doc_urls[doc_key]))
+
+
+def open_fits_dic():
+    "Open new browser tab for FITS DIC."
+    open_doc_url("fits_dic")
+
