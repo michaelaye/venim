@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7.1 (2020-06-01)
+
+#### New Features
+
+* (data): add points annotation method
+
 ## v0.6.4 (2020-05-29)
 
 #### Fixes
