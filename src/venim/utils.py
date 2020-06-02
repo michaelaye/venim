@@ -27,8 +27,39 @@ def create_browse_images(filelist):
             print(f"problem with {p.name}")
 
 
-def check_expection_handling():
-    try:
-        print(1 / 0)
-    except ZeroDivisionError:
-        pass
+def find_best_header(path):
+    hdul = fits.open(path)
+    best_hdu = None
+    while hdul:
+        hdu = hdul.pop(0)
+        best_hdu = hdu
+        if isinstance(hdu, fits.hdu.image.ImageHDU):
+            break
+    return best_hdu.header
+
+
+def convert_header_to_dataframe(header, index=None):
+    # there's a huge empty string at the end of headers
+    # if it's called "", then it's removed, otherwise no harm done.
+    _ = headerdict.pop("", None)
+    # remove COMMENT and ORIGIN
+    keys_to_delete = ["COMMENT", "ORIGIN"]
+    for key in keys_to_delete:
+        _ = headerdict.pop(key, None)
+    index = pd.Index([index], name="filename")
+    return pd.DataFrame(pd.Series(headerdict).to_dict(), index=index)
+
+
+def write_out_fits_headers(folder):
+    folder = Path(folder)
+    fits_files = folder.glob("*.fits")
+
+    bucket = []
+
+    for f in fits_files:
+        header = find_best_header(f)
+        bucket.append(convert_header_to_dataframe(header, index=f.name))
+    df = pd.concat(bucket)
+    savename = f"{folder.name}_fits_headers.csv"
+    savepath = folder / savename
+    df.to_csv(savepath)
