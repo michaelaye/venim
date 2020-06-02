@@ -1,9 +1,12 @@
+from pathlib import Path
+
 import matplotlib
 import matplotlib.pyplot as plt
+import pandas as pd
 from astropy.io import fits
 from tqdm.auto import tqdm
 
-from .ir2 import IR2FileName
+from .akatsuki.ir2 import IR2FileName
 
 matplotlib.use("agg")
 
@@ -39,6 +42,7 @@ def find_best_header(path):
 
 
 def convert_header_to_dataframe(header, index=None):
+    headerdict = dict(header)
     # there's a huge empty string at the end of headers
     # if it's called "", then it's removed, otherwise no harm done.
     _ = headerdict.pop("", None)
