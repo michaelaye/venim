@@ -380,6 +380,8 @@ class IR2PathManager(PathManager):
         columns = list(df.columns)
         columns.remove("full_path")
         columns.append("full_path")
+        for col in "naxis1 naxis2".upper().split():
+            df[col] = df[col].astype("int")
         return df[columns].set_index("datetime")
 
     def get_path(self, index):
