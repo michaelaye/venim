@@ -7,6 +7,7 @@ import webbrowser
 from pathlib import Path
 from urllib.request import urlretrieve
 
+import circle_fit as cf
 import holoviews as hv
 import numpy as np
 import pandas as pd
@@ -24,7 +25,7 @@ from ..pathmanager import PathManager
 
 hv.extension("bokeh")
 opts.defaults(
-    opts.Image(tools=["hover"], cmap="gray", width=500, height=500),
+    opts.Image(tools=["hover"], cmap="gray"),
     opts.Points(color="red", marker="x", size=20),
 )
 
@@ -527,7 +528,19 @@ class Image:
 
     @property
     def name(self):
-        return self.p.name
+        return self.path.name
+
+    @property
+    def wavelength(self):
+        return IR2FileName(self.name).wavelength
+
+    @property
+    def exposure(self):
+        return self.header["EXPOSURE"]
+
+    @property
+    def imagetime(self):
+        return IR2FileName(self.name).datetime
 
     @property
     def full_frame(self):
@@ -547,10 +560,26 @@ class Image:
     def equalized(self):
         return equalize(self.rescaled)
 
-    def plot(self):
-        return hv.Image(
-            (np.arange(1024), np.arange(1024), self.full_frame)
-        ).redim.range(z=(0, None))
+    def plot(self, sqrt=False, pmin=1, pmax=99, with_fit=False):
+        data = self.full_frame
+        data[data < 0] = np.nan
+        if sqrt:
+            data = np.sqrt(data)
+        vmin, vmax = np.percentile(data[~np.isnan(data)], (pmin, pmax))
+        if sqrt:
+            data = np.sqrt(data)
+        img = hv.Image(
+            (np.arange(1024), np.arange(1024), data), label=self.plot_title
+        ).opts(clim=(vmin, vmax), frame_height=500, frame_width=500,)
+        if with_fit:
+            return img * self.circle_fit
+        else:
+            return img
+
+    @property
+    def plot_title(self):
+        t = f"{self.imagetime}, Filter: {self.wavelength}, Exp: {self.exposure} s"
+        return t
 
     def plot_equalized(self):
         return hv.Raster(self.equalized).redim.range(z=(0, None))
@@ -558,12 +587,20 @@ class Image:
     def annotate(self):
         points = hv.Points([]).opts(width=500, height=500, padding=0, responsive=False)
         self.annotator = hv.annotate.instance()
-        layout = self.annotator(self.plot() * points, name="Limb Points")
+        layout = self.annotator(
+            self.plot().opts(frame_height=400, frame_width=400,) * points,
+            name="Limb Points",
+        )
         return layout
+
+    @property
+    def circle_fit(self):
+        xCtr, yCtr, r, _ = cf.least_squares_circle(self.points_data.values)
+        return hv.Ellipse(xCtr, yCtr, 2 * r).opts(color="red")
 
     @property
     def points_data(self):
         try:
             return self.annotator.annotated.dframe()
         except AttributeError:
-            print("Got to annotate first")
+            return pd.DataFrame()
