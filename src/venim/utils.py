@@ -54,7 +54,23 @@ def convert_header_to_dataframe(header, index=None):
     return pd.DataFrame(pd.Series(headerdict).to_dict(), index=index)
 
 
-def write_out_fits_headers(folder=None):
+def write_out_fits_headers(folder):
+    """Writing out FITS headers into CSV.
+
+    This function will search for FITS files in the given FOLDER.
+    It then scans each FITS file for ImageHDUs, and if not there, will take any HDU's header.
+    It collects all header data, removes the keys "COMMENT", "HISTORY", and "ORIGIN",
+    and combines everything into a CSV file.
+
+    Parameters
+    ----------
+    folder : str, pathlib.Path
+        Folder in which to look for FITS files. Can be ".".
+
+    Returns
+    -------
+    Nothing, but creates a CSV file named: "<FOLDER>_fits_headers.csv"
+    """
     if folder is None:
         folder = Path(".").absolute()
     folder = Path(folder).absolute()
