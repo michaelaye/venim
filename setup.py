@@ -39,6 +39,7 @@ setup(
         "astropy",
         "holoviews",
         "circle-fit",
+        "fire",
     ],
     license="MIT license",
     # zip_safe=False,
