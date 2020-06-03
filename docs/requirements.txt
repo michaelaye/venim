@@ -4,3 +4,5 @@ matplotlib
 planetarypy
 urlpath
 astropy
+fire
+sphinxcontrib-apidoc
