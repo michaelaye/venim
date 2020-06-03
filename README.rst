@@ -13,10 +13,8 @@ Venus Imaging Analysis
         :target: https://venim.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/michaelaye/venim/shield.svg
-     :target: https://pyup.io/repos/github/michaelaye/venim/
-     :alt: Updates
-
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3839219.svg
+   :target: https://doi.org/10.5281/zenodo.3839219
 
 Python tools for Venus Image Analysis
 
