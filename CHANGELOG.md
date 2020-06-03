@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.8.0 (2020-06-02)
+
+#### New Features
+
+* (data): add write_out_fits_headers(folder) to utils modules
+* (data): add storing of points
+* (data): change dtype of NAXIS1/2 to int
+#### Fixes
+
+* (data): fix imports
+#### Refactorings
+
+* move utils into main venim package
+#### Others
+
+* add holoviews and circle-fit
+
 ## v0.7.1 (2020-06-01)
 
 #### New Features
