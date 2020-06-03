@@ -30,10 +30,17 @@ If the feature has been implemented in an importable way, it's indicated by a fi
 
 * [x] Read FITS arrays (done via astropy.io.fits)
 * [x] FITS image stats scanner (creates CSV overview file)
-* [ ] Standard image reduction pipeline: bias subtraction, flat field normalization, etc.
-* [ ] Other image clean-up: bad pixels, cosmic rays, detector artifacts
-* [ ] Generate estimated errors for each pixel
-* [ ] Transform detector x,y coordinates into local Lat, Lon
+* [ ] For un-calibrated ground-based observations:
+   * [ ] Standard image reduction pipeline: bias subtraction, flat field normalization, etc.
+   * [ ] Other image clean-up: bad pixels, cosmic rays, detector artifacts
+   * [ ] Generate estimated errors for each pixel
+   * [ ] Transform detector x,y coordinates into local Lat, Lon
+* [ ] Access PDS data automatically via mission dependent interfaces
+   * [x] Automatic downloads per volume orbit
+   * [x] Local easy data access per data ID
+   * [x] Akatsuki version implemented
+   * [ ] VEX
+* [x] Annotate images and implement a point-based circle-fit
 * [ ] Take various gradients of images
 * [ ] Filter images in the spatial frequency domain
 * [ ] Sub-pixel disk registration
