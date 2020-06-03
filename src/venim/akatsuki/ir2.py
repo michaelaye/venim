@@ -54,8 +54,6 @@ doc_urls = {
     ),
 }
 
-HEADER_KEYWORDS = ["EXPOSURE", "NAXIS1", "NAXIS2", "I2_T_C1", "I2_T_C2", "I2_T_OP"]
-
 
 def get_rev_filelist(rev, level="calibrated"):
     """Scrape PDS file listing using pandas.read_html.
@@ -221,7 +219,7 @@ class Downloader:
         ]
         return pd.Series(urls)
 
-    def download_orbit_files(self, orbit=None, only_fits=True, **kwargs):
+    def download_orbit_files(self, orbit=None, only_fits=False, **kwargs):
         if orbit is None:
             orbit = self.orbit
         else:
@@ -373,11 +371,9 @@ class IR2PathManager(PathManager):
         pathlist = list((self.savedir).glob("*.fit*"))
         namelist = [f.name for f in pathlist]
         df = pd.DataFrame({"filename": namelist, "full_path": pathlist})
-        df["datetime"] = df.filename.map(lambda x: IR2FileName(x).datetime)
         df["wavelength"] = df.filename.map(lambda x: int(IR2FileName(x).wavelength))
         df = pd.concat([df, df.apply(get_header_keywords, axis=1)], axis=1)
-        # for keyword in HEADER_KEYWORDS:
-        #     df[keyword] = df.full_path.map(lambda x: fits.open(x)[1].header[keyword])
+        df["datetime"] = pd.to_datetime(df["DATE-OBS"])
         columns = list(df.columns)
         columns.remove("full_path")
         columns.append("full_path")
@@ -404,6 +400,16 @@ class IR2PathManager(PathManager):
 
 # helper functions
 def get_header_keywords(row):
+    HEADER_KEYWORDS = [
+        "EXPOSURE",
+        "NAXIS1",
+        "NAXIS2",
+        "I2_T_C1",
+        "I2_T_C2",
+        "I2_T_OP",
+        "DATE-OBS",
+    ]
+
     header = fits.open(row.full_path)[1].header
     d = {}
     for kw in HEADER_KEYWORDS:
