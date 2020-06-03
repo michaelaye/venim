@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.9.2 (2020-06-02)
+
+#### Fixes
+
+* (build): add fire to requirements
+
+## v0.9.1 (2020-06-02)
+
+#### Docs
+
+* (data): add docstring to write_fits_headers
+#### Others
+
+* updating notebooks
+
 ## v0.9.0 (2020-06-02)
 
 
