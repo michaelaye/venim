@@ -28,7 +28,7 @@ setup(
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     python_requires=">=3.6, <4",
-    entry_points={"console_scripts": ["venim=venim.cli:main"]},
+    entry_points={"console_scripts": ["write_fits_headers=venim.fits_cli:main"]},
     include_package_data=True,
     install_requires=[
         "numpy",

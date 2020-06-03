@@ -54,8 +54,10 @@ def convert_header_to_dataframe(header, index=None):
     return pd.DataFrame(pd.Series(headerdict).to_dict(), index=index)
 
 
-def write_out_fits_headers(folder):
-    folder = Path(folder)
+def write_out_fits_headers(folder=None):
+    if folder is None:
+        folder = Path(".").absolute()
+    folder = Path(folder).absolute()
     fits_files = folder.glob("*.fits")
 
     bucket = []
