@@ -27,6 +27,18 @@ class Image:
         return self.path.name
 
     @property
+    def wavelength(self):
+        return self.header["FILTER"]
+
+    @property
+    def exposure(self):
+        return self.header["EXPOSURE"]
+
+    @property
+    def imagetime(self):
+        return self.header["DATE-OBS"]
+
+    @property
     def full_frame(self):
         newimg = np.zeros((1024, 1024))
         ll_row = self.header["P_POSLLY"] - 1
@@ -88,7 +100,7 @@ class Image:
         try:
             return self.annotator.annotated.dframe()
         except AttributeError:
-            return pd.DataFrame()
+            return pd.DataFrame({"x": [], "y": []})
 
     @property
     def points_path(self):
