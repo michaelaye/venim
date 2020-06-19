@@ -208,7 +208,7 @@ class Downloader:
         ]
         return pd.Series(urls)
 
-    def download_orbit_files(self, orbit=None, only_fits=False, **kwargs):
+    def download_orbit_files(self, orbit=None, n=None, only_fits=False, **kwargs):
         if orbit is None:
             orbit = self.orbit
         else:
@@ -217,6 +217,8 @@ class Downloader:
         if only_fits:
             urls = [url for url in urls if url.suffix.endswith(".fit")]
         orbit_savedir = self.savedir / self.orbit
+        if n is not None:
+            urls=urls[:n]
         download_list_of_urls(orbit_savedir, urls, **kwargs)
 
 
