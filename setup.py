@@ -40,6 +40,7 @@ setup(
         "holoviews",
         "circle-fit",
         "fire",
+        "scikit-image"
     ],
     license="MIT license",
     # zip_safe=False,
