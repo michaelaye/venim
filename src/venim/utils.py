@@ -41,20 +41,38 @@ def find_best_header(path):
     return best_hdu.header
 
 
-def convert_header_to_dataframe(header, index=None):
+def clean_header(header):
     headerdict = dict(header)
     # there's a huge empty string at the end of headers
     # if it's called "", then it's removed, otherwise no harm done.
     _ = headerdict.pop("", None)
     # remove COMMENT and ORIGIN
-    keys_to_delete = ["COMMENT", "ORIGIN"]
+    keys_to_delete = ["COMMENT", "ORIGIN", "HISTORY"]
     for key in keys_to_delete:
         _ = headerdict.pop(key, None)
+    return headerdict
+
+
+def convert_header_to_dataframe(header, index=None):
+    headerdict = dict(header)
     index = pd.Index([index], name="filename")
+    headerdict = clean_header(header)
     return pd.DataFrame(pd.Series(headerdict).to_dict(), index=index)
 
 
-def write_out_fits_headers(folder):
+def get_data_frame(fits_files, folder):
+    bucket = []
+
+    for f in fits_files:
+        header = find_best_header(f)
+        bucket.append(convert_header_to_dataframe(header, index=f.name))
+    df = pd.concat(bucket)
+    savename = f"{folder.name}_fits_headers.csv"
+    savepath = folder / savename
+    df.to_csv(savepath)
+
+
+def write_out_fits_headers(folder, single_file=False):
     """Writing out FITS headers into CSV.
 
     This function will search for FITS files in the given FOLDER.
@@ -66,6 +84,8 @@ def write_out_fits_headers(folder):
     ----------
     folder : str, pathlib.Path
         Folder in which to look for FITS files. Can be ".".
+    single_file : bool, optional
+        Switch to write out a header file for each FITS file separately.
 
     Returns
     -------
@@ -76,12 +96,11 @@ def write_out_fits_headers(folder):
     folder = Path(folder).absolute()
     fits_files = folder.glob("*.fits")
 
-    bucket = []
-
-    for f in fits_files:
-        header = find_best_header(f)
-        bucket.append(convert_header_to_dataframe(header, index=f.name))
-    df = pd.concat(bucket)
-    savename = f"{folder.name}_fits_headers.csv"
-    savepath = folder / savename
-    df.to_csv(savepath)
+    if single_file:
+        for path in fits_files:
+            header = find_best_header(path)
+            savename = f"{path.stem}_header.txt"
+            savepath = path.with_name(savename)
+            header.totextfile(str(savepath))
+    else:
+        get_data_frame(fits_files, folder)
