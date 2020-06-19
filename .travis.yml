@@ -13,13 +13,13 @@ install:
     - hash -r
     - conda config --set always_yes yes
     - conda update -q conda
-    - conda install conda-build anaconda-client pytest pytest-cov
+    - conda install conda-build anaconda-client pytest pytest-cov nbval
     - conda config --set auto_update_conda no
     - conda info -a
     - pip install venim
 
 script:
-    - pytest -v --color=yes --cov=venim tests
+    - pytest -v --color=yes --cov=venim --nbval tests
 after_success:
     - conda install -c conda-forge codecov
     - codecov
