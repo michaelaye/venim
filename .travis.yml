@@ -6,6 +6,12 @@ python:
     - 3.7
     - 3.8
 
+cache:
+    directories:
+        - $HOME/.cache/pip
+before_cache:
+    - rm -f $HOME/.cache/pip/log/debug.log
+
 install:
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     - bash miniconda.sh -b -p $HOME/miniconda
@@ -17,6 +23,7 @@ install:
     - conda config --set auto_update_conda no
     - conda info -a
     - pip install .
+    - echo "~/venim_downloads" > ~/.venim_config.toml
 
 script:
     - pytest -v --color=yes --cov=venim --nbval --current-env tests
