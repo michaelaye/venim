@@ -19,7 +19,7 @@ install:
     - pip install .
 
 script:
-    - pytest -v --color=yes --cov=venim --nbval tests
+    - pytest -v --color=yes --cov=venim --nbval --current-env tests
 after_success:
     - conda install -c conda-forge codecov
     - codecov
