@@ -41,7 +41,9 @@ setup(
         "circle-fit",
         "fire",
         "scikit-image",
-        "lxml"
+        "lxml",
+        "tqdm",
+        "ipywidgets"
     ],
     license="MIT license",
     # zip_safe=False,
