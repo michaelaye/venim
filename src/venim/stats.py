@@ -64,9 +64,11 @@ def scan_image_directory(path):
         line["exposure"] = head["ELAPTIME"]
         line["hasSlit"] = head["SLIT"] != "Mirror"
         line["isValid"] = head["ELAPTIME"] == 0.482500 and head["GFLT"] == "contK"
+        line["naxis1"] = head["NAXIS1"]
+        line["naxis2"] = head["NAXIS2"]
         bucket.append(line)
 
     df = pd.DataFrame(bucket)
-    df.to_csv(directory_file)
+    df.to_csv(directory_file, index=False)
     print("Metadata CSV generated at", directory_file)
     return df
