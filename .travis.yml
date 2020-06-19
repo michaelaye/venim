@@ -23,7 +23,7 @@ install:
     - conda config --set auto_update_conda no
     - conda info -a
     - pip install .
-    - echo "~/venim_downloads" > ~/.venim_config.toml
+    - echo "venim_path = \"~/venim_downloads\" > ~/.venim_config.toml
 
 script:
     - pytest -v --color=yes --cov=venim --nbval --current-env tests
